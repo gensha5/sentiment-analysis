@@ -21,7 +21,7 @@ async def analyze(responses: str = Form(...)):
     for response in respose_list:
         chat_completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messeages=[
+            messages=[
                 {"role": "user", "content": f"Classify the sentiment of the following text as positive, negative, or neutral:\n\n{response}"}
             ]
         )
