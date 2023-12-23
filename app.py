@@ -11,7 +11,6 @@ if st.button("分析する"):
     # response = requests.post("https://sentiment-analysis-lf56.onrender.com", data={"question": question, "responses": responses})
     if response.status_code == 200:
         results = response.json()
-        # process results
         for sentiment in ["positive", "negative", "neutral"]:
             if sentiment in results:
                 st.subheader(f"{sentiment.title()}")

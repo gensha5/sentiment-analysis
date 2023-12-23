@@ -39,11 +39,19 @@ async def analyze(question: str = Form(...), responses: str = Form(...)):
             analyzed_summary = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {
-                        "role": "user", 
-                        "content": f"Analyze and summarize in Japanese the key themes and reasons for the sentiments expressed in these responses related to the question '{question}'.\n\n{combined_responses}"
-                    }
-                ]
+                        {
+                            "role": "system",
+                            "content": "This is a task to summarize the key themes and reasons behind the sentiments expressed in the provided responses, related to a specific question. The summary should be concise, informative, and in Japanese."
+                        },
+                        {
+                            "role": "user",
+                            "content": f"The following are responses related to the question '{question}'. Please summarize the key themes and reasons behind the sentiments expressed in these responses."
+                        },
+                        {
+                            "role": "assistant",
+                            "content": combined_responses
+                        }
+                    ]
             )
             sentiment_summaries[sentiment] = {
                 "responses": responses,
