@@ -3,8 +3,10 @@ from openai import OpenAI
 import os
 
 app = FastAPI()
-OpenAI.api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI()
+# OpenAI.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(
+    api_key = os.getenv("OPENAI_API_KEY"),
+)
 
 @app.get("/analyze")
 async def analyze(responses: str = Form(...)):
