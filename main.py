@@ -3,7 +3,7 @@ from openai import OpenAI
 import os
 
 app = FastAPI()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+OpenAI.api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 
 @app.get("/analyze")
