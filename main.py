@@ -12,7 +12,7 @@ client = OpenAI(
 
 @app.post("/")
 async def analyze(responses: str = Form(...)):
-    respose_list = responses.split(",")
+    respose_list = responses.split("\n")
 
     positive_responses = []
     negative_responses = []
