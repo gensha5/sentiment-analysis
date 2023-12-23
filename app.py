@@ -10,7 +10,7 @@ if st.button("分析する"):
     results = response.json()
 
     for sentiment, items in results.items():
-        st.subheader(f"{sentiment.title()} Responses")
+        st.subheader(f"{sentiment.title()}")
         st.write(f"回答数: {len(items)}")
         st.write("回答:")
         for item in items:
