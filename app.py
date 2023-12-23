@@ -7,7 +7,7 @@ question = st.text_input("質問文を入力してください。")
 responses = st.text_area("自由記述欄の回答を入力してください。\n1回答1行で入力してください。", height=300)
 
 if st.button("分析する"):
-    response = requests.post("https://sentiment-analysis-lf56.onrender.com", data={"question":question, "responses": responses})
+    response = requests.post("https://sentiment-analysis-lf56.onrender.com", data={"responses": responses})
     results = response.json()
 
     if "positive" in results:
