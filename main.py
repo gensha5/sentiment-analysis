@@ -12,7 +12,7 @@ client = OpenAI(
 
 @app.post("/")
 async def analyze(question: str = Form(...), responses: str = Form(...)):
-    respose_list = responses.split("\n")
+    respose_list = responses.split(",")
 
     categorized_responses = {
         "positive": [],
@@ -36,10 +36,10 @@ async def analyze(question: str = Form(...), responses: str = Form(...)):
     for sentiment, responses in categorized_responses.items():
         if responses:
             combined_responses = ",".join(responses)
-            analyzed_summary = client.completions.create(
+            analyzed_summary = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "user", "content": f"Provide a summary for the following responses related to the question '{question}':\n\n{combined_responses}"}
+                    {"role": "user", "content": f"Provide a summary in Japanese for the following responses related to the question '{question}':\n\n{combined_responses}"}
                 ]
             )
             sentiment_summaries[sentiment] = {
