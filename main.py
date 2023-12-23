@@ -11,31 +11,39 @@ client = OpenAI(
 )
 
 @app.post("/")
-async def analyze(responses: str = Form(...)):
+async def analyze(question: str = Form(...), responses: str = Form(...)):
     respose_list = responses.split("\n")
 
-    positive_responses = []
-    negative_responses = []
-    neutral_responses = []
+    categorized_responses = {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+    }
 
     for response in respose_list:
-        chat_completion = client.chat.completions.create(
+        analyzed_sentiment = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "user", "content": f"Classify the sentiment of the following text as positive, negative, or neutral:\n\n{response}"}
             ]
         )
-        sentiment = chat_completion.choices[0].message.content
+        sentiment = analyzed_sentiment.choices[0].message.content
 
-        if sentiment == "positive":
-            positive_responses.append(response)
-        elif sentiment == "negative":
-            negative_responses.append(response)
-        else:
-            neutral_responses.append(response)
-
-    return {
-        "positive": positive_responses,
-        "negative": negative_responses,
-        "neutral": neutral_responses
-    }
+        if sentiment in categorized_responses:
+            categorized_responses[sentiment].append(response)
+    
+    sentiment_summaries = {}
+    for sentiment, responses in categorized_responses.items():
+        if responses:
+            combined_responses = ",".join(responses)
+            analyzed_summary = client.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": f"Provide a summary for the following responses related to the question '{question}':\n\n{combined_responses}"}
+                ]
+            )
+            sentiment_summaries[sentiment] = {
+                "responses": responses,
+                "summary": analyzed_summary.choices[0].message.content,
+            }
+    return sentiment_summaries
