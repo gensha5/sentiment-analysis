@@ -10,7 +10,7 @@ client = OpenAI(
     api_key = os.getenv("OPENAI_API_KEY"),
 )
 
-@app.post("/analyze")
+@app.post("/")
 async def analyze(responses: str = Form(...)):
     respose_list = responses.split(",")
 
