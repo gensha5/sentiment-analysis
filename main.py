@@ -10,7 +10,7 @@ client = OpenAI(
     api_key = os.getenv("OPENAI_API_KEY"),
 )
 
-@app.get("/analyze")
+@app.post("/analyze")
 async def analyze(responses: str = Form(...)):
     respose_list = responses.split(",")
 
@@ -25,7 +25,7 @@ async def analyze(responses: str = Form(...)):
                 {"role": "user", "content": f"Classify the sentiment of the following text as positive, negative, or neutral:\n\n{response}"}
             ]
         )
-        sentiment = chat_completion.choices[0].messeage
+        sentiment = chat_completion.choices[0].message.content
 
         if sentiment == "positive":
             positive_responses.append(response)
