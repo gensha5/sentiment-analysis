@@ -12,7 +12,7 @@ client = OpenAI(
 
 @app.post("/")
 async def analyze(question: str = Form(...), responses: str = Form(...)):
-    respose_list = responses.split(",")
+    response_list = responses.split(",")
 
     categorized_responses = {
         "positive": [],
@@ -20,7 +20,7 @@ async def analyze(question: str = Form(...), responses: str = Form(...)):
         "neutral": []
     }
 
-    for response in respose_list:
+    for response in response_list:
         analyzed_sentiment = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
