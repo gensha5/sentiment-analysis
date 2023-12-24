@@ -8,8 +8,8 @@ question = st.text_input("質問文を入力してください。")
 responses = st.text_area("自由記述欄の回答を入力してください。コンマ区切りで入力してください。", height=300)
 
 if st.button("分析する"):
-    # response = requests.post("http://localhost:8000/", data={"question": question, "responses": responses})
-    response = requests.post("https://sentiment-analysis-lf56.onrender.com", data={"question": question, "responses": responses})
+    response = requests.post("http://localhost:8000/", data={"question": question, "responses": responses})
+    # response = requests.post("https://sentiment-analysis-lf56.onrender.com", data={"question": question, "responses": responses})
     if response.status_code == 200:
         results = response.json()
 

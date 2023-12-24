@@ -37,7 +37,7 @@ async def analyze(question: str = Form(...), responses: str = Form(...)):
         if responses:
             combined_responses = ",".join(responses)
             analyzed_summary = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4",
                 messages=[
                         {
                             "role": "system",
