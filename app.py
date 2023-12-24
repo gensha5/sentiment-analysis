@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import matplotlib.pyplot as plt
 
 st.title("自由記述欄を自動分析する")
 
@@ -11,6 +12,17 @@ if st.button("分析する"):
     response = requests.post("https://sentiment-analysis-lf56.onrender.com", data={"question": question, "responses": responses})
     if response.status_code == 200:
         results = response.json()
+
+        sentiment_counts = {"positive": 0, "negative": 0, "neutral": 0}
+        for sentiment in ["positive", "negative", "neutral"]:
+            if sentiment in results:
+                sentiment_counts[sentiment] = len(results[sentiment]['responses'])
+        fig, ax = plt.subplots()
+        ax.pie(sentiment_counts.values(), labels=sentiment_counts.keys(), autopct='%1.1f%%', startangle=90)
+        ax.axis('equal')
+        st.pyplot(fig)
+
+
         for sentiment in ["positive", "negative", "neutral"]:
             if sentiment in results:
                 st.subheader(f"{sentiment.title()}")
