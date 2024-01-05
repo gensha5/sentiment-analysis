@@ -27,7 +27,7 @@ async def analyze(question: str = Form(...), responses: str = Form(...)):
                 {"role": "user", "content": f"Classify the sentiment of the following text as positive, negative, or neutral:\n\n{response}"}
             ]
         )
-        sentiment = analyzed_sentiment.choices[0].message.content
+        sentiment = analyzed_sentiment.choices[0].message.content.strip()
 
         if sentiment in categorized_responses:
             categorized_responses[sentiment].append(response)
