@@ -39,19 +39,19 @@ async def analyze(question: str = Form(...), responses: str = Form(...)):
             analyzed_summary = client.chat.completions.create(
                 model="gpt-4",
                 messages=[
-                        {
-                            "role": "system",
-                            "content": "This is a task to summarize the key themes and reasons behind the sentiments expressed in the provided responses, related to a specific question. The summary should be concise, informative, and in Japanese."
-                        },
-                        {
-                            "role": "user",
-                            "content": f"The following are responses related to the question '{question}'. Please summarize the key themes and reasons behind the sentiments expressed in these responses."
-                        },
-                        {
-                            "role": "assistant",
-                            "content": combined_responses
-                        }
-                    ]
+                    {
+                        "role": "system",
+                        "content": "This is a task to create a formal, detailed summary in Japanese, focusing on the '{sentiment}' responses to a specific question. The summary should capture the key themes and reasons behind the sentiments expressed, suitable for direct inclusion in a report. It should be concise, informative, and reflect the nuances of Japanese language."
+                    },
+                    {
+                        "role": "user",
+                        "content": f"Please provide a structured summary in Japanese of the '{sentiment}' responses to the question '{question}'. The summary should elucidate the key themes and reasons for these sentiments, formatted for direct use in a report."
+                    },
+                    {
+                        "role": "assistant",
+                        "content": combined_responses
+                    }
+                ]
             )
             sentiment_summaries[sentiment] = {
                 "responses": responses,
