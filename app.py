@@ -8,8 +8,8 @@ question = st.text_input("質問文を入力してください。")
 responses = st.text_area("自由記述欄の回答を入力してください。コンマ区切りで入力してください。", height=300)
 
 if st.button("分析する"):
-    # response = requests.post("http://localhost:8000/", data={"question": question, "responses": responses})
-    response = requests.post("https://sentiment-analysis-lf56.onrender.com", data={"question": question, "responses": responses})
+    response = requests.post("http://localhost:8000/", data={"question": question, "responses": responses})
+    # response = requests.post("https://sentiment-analysis-lf56.onrender.com", data={"question": question, "responses": responses})
     if response.status_code == 200:
         results = response.json()
 
@@ -17,11 +17,16 @@ if st.button("分析する"):
         for sentiment in ["positive", "negative", "neutral"]:
             if sentiment in results:
                 sentiment_counts[sentiment] = len(results[sentiment]['responses'])
-        fig, ax = plt.subplots()
-        ax.pie(sentiment_counts.values(), labels=sentiment_counts.keys(), autopct='%1.1f%%', startangle=90)
-        ax.axis('equal')
-        st.pyplot(fig)
+  
+        filtered_sentiment_counts = {k: v for k, v in sentiment_counts.items() if v > 0}
 
+        fig, ax = plt.subplots()
+        if filtered_sentiment_counts:  # 辞書が空でない場合のみグラフを描画
+            ax.pie(filtered_sentiment_counts.values(), labels=filtered_sentiment_counts.keys(), autopct='%1.1f%%', startangle=90)
+            ax.axis('equal')
+            st.pyplot(fig)
+        else:
+            st.write("回答がないため、グラフは表示されません。")
 
         for sentiment in ["positive", "negative", "neutral"]:
             if sentiment in results:
